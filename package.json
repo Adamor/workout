@@ -1,0 +1,14 @@
+{
+  "name": "contest-prep-tracker",
+  "version": "1.0.0",
+  "description": "Bodybuilding contest prep workout tracker",
+  "main": "index.html",
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "echo 'No build step required'",
+    "start": "vercel dev"
+  },
+  "keywords": ["bodybuilding", "workout", "tracker", "contest", "prep"],
+  "author": "Arthur Bouie",
+  "license": "MIT"
+}
