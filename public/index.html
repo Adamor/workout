@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
   <title>16-Week Contest Prep - 4-Day Split Program</title>
   <style>
-    * { box-sizing: border-box; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 20px;
@@ -75,8 +75,6 @@
     }
     .day-content { display: none; }
     .day-content.active { display: block; }
-
-    /* TABLE VIEW for Desktop */
     .exercise-table {
       width: 100%;
       border-collapse: collapse;
@@ -140,8 +138,6 @@
       font-weight: bold;
       font-size: 16px;
     }
-
-    /* CARDS for Mobile */
     .mobile-cards { display: none; }
     @media (max-width: 768px) {
       .exercise-table { display: none; }
@@ -192,7 +188,6 @@
     @media (max-width: 768px) {
       .mobile-cards { margin-bottom: 25px;}
     }
-
     .button-group {
       text-align: center;
       margin: 30px 0;
@@ -282,14 +277,7 @@
       <button class="tab" onclick="showDay(3)">Day 3: Pull B (Lats)</button>
       <button class="tab" onclick="showDay(4)">Day 4: Push B (Shoulders)</button>
     </div>
-
-    <!-- --------- DAY CONTENTS: TABLES + MOBILE CARDS --------- -->
-    <!-- Loop for all days -->
-    <div id="days-root">
-      <!-- Rendered by JS -->
-    </div>
-    <!-- --------- END DAY CONTENTS --------- -->
-
+    <div id="days-root"></div>
     <div class="button-group">
       <button class="button" onclick="saveProgress()">💾 Save Progress</button>
       <button class="button" onclick="loadProgress()">📂 Load Saved Data</button>
