@@ -3,8 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contest Prep Workout Tracker</title>
+    <title>16-Week Contest Prep - 4-Day Split Program</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 20px;
@@ -38,6 +44,25 @@
             border: 2px solid #3498db;
             border-radius: 5px;
             background: white;
+        }
+        
+        .week-info {
+            background: #e8f4f8;
+            border: 1px solid #3498db;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px auto;
+            max-width: 600px;
+            text-align: center;
+        }
+        
+        .week-info p {
+            margin: 5px 0;
+            color: #2c3e50;
+        }
+        
+        .week-info strong {
+            color: #3498db;
         }
         
         .day-tabs {
@@ -112,7 +137,7 @@
         }
         
         .set-input {
-            width: 60px;
+            width: 80px;
             padding: 6px;
             border: 1px solid #ddd;
             border-radius: 4px;
@@ -148,7 +173,12 @@
             font-size: 16px;
         }
         
-        .export-btn {
+        .button-group {
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .button {
             background: linear-gradient(135deg, #27ae60, #2ecc71);
             color: white;
             border: none;
@@ -157,14 +187,21 @@
             font-size: 16px;
             font-weight: bold;
             cursor: pointer;
-            margin: 20px auto;
-            display: block;
+            margin: 0 10px;
             transition: all 0.3s ease;
         }
         
-        .export-btn:hover {
+        .button:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+        }
+        
+        .button.clear {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
+        
+        .button.clear:hover {
+            box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
         }
         
         .notes-section {
@@ -189,6 +226,27 @@
             font-family: inherit;
         }
         
+        .status-message {
+            text-align: center;
+            padding: 10px;
+            margin: 20px 0;
+            border-radius: 8px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
         @media (max-width: 768px) {
             .exercise-table {
                 font-size: 12px;
@@ -201,22 +259,39 @@
             .notes-input {
                 width: 100px;
             }
+            
+            .day-tabs {
+                flex-wrap: wrap;
+            }
+            
+            .tab {
+                font-size: 14px;
+                padding: 10px 16px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🏆 Contest Prep Workout Tracker</h1>
+        <h1>🏆 16-Week Contest Prep - 4-Day Split Program</h1>
         
         <div class="week-selector">
             <label for="week-select">Training Week: </label>
-            <select id="week-select">
+            <select id="week-select" onchange="updateWeekInfo()">
                 <option value="1">Week 1-4: Foundation Building</option>
                 <option value="2">Week 5-8: Volume Accumulation</option>
                 <option value="3">Week 9-12: Intensity & Detail</option>
                 <option value="4">Week 13-16: Peak Conditioning</option>
             </select>
         </div>
+        
+        <div id="week-info" class="week-info">
+            <p><strong>Focus:</strong> Progressive overload</p>
+            <p><strong>Rep Ranges:</strong> 8-12 for compounds, 12-15 for isolation</p>
+            <p><strong>Goal:</strong> Build work capacity</p>
+        </div>
+        
+        <div id="status-message" class="status-message"></div>
         
         <div class="day-tabs">
             <button class="tab active" onclick="showDay(1)">Day 1: Legs + Pull</button>
@@ -238,14 +313,348 @@
                         <th>Set 4 (Weight/Reps)</th>
                         <th>Notes/RPE</th>
                     </tr>
+                </thead>
+                <tbody>
+                    <tr class="section-header">
+                        <td colspan="7">PRIMARY LEG MOVEMENTS</td>
+                    </tr>
+                    <tr>
+                        <td class="exercise-name">Hex Deadlift</td>
+                        <td class="target-reps">4 x 8-12</td>
+                        <td><input type="text" class="set-input" id="d1-hex-deadlift-s1"></td>
+                        <td><input type="text" class="set-input" id="d1-hex-deadlift-s2"></td>
+                        <td><input type="text" class="set-input" id="d1-hex-deadlift-s3"></td>
+                        <td><input type="text" class="set-input" id="d1-hex-deadlift-s4"></td>
+                        <td><input type="text" class="notes-input" id="d1-hex-deadlift-notes"></td>
+                    </tr>
+                    <tr>
+                        <td class="exercise-name">Bulgarian Split Squats</td>
+                        <td class="target-reps">3 x 10-12 each</td>
+                        <td><input type="text" class="set-input" id="d1-bulgarian-split-s1"></td>
+                        <td><input type="text" class="set-input" id="d1-bulgarian-split-s2"></td>
+                        <td><input type="text" class="set-input" id="d1-bulgarian-split-s3"></td>
+                        <td><input type="text" class="set-input" disabled></td>
+                        <td><input type="text" class="notes-input" id="d1-bulgarian-split-notes"></td>
+                    </tr>
+                    <tr>
+                        <td class="exercise-name">Romanian Deadlifts</td>
+                        <td class="target-reps">3 x 12-15</td>
+                        <td><input type="text" class="set-input" id="d1-romanian-dl-s1"></td>
+                        <td><input type="text" class="set-input" id="d1-romanian-dl-s2"></td>
+                        <td><input type="text" class="set-input" id="d1-romanian-dl-s3"></td>
+                        <td><input type="text" class="set-input" disabled></td>
+                        <td><input type="text" class="notes-input" id="d1-romanian-dl-notes"></td>
+                    </tr>
+                    <tr class="section-header">
+                        <td colspan="7">LAT-FOCUSED PULL WORK</td>
+                    </tr>
+                    <tr>
+                        <td class="exercise-name">Wide Grip Pull-ups/Lat Pulldown</td>
+                        <td class="target-reps">4 x 8-12</td>
+                        <td><input type="text" class="set-input" id="d1-pullups-s1"></td>
+                        <td><input type="text" class="set-input" id="d1-pullups-s2"></td>
+                        <td><input type="text" class="set-input" id="d1-pullups-s3"></td>
+                        <td><input type="text" class="set-input" id="d1-pullups-s4"></td>
+                        <td><input type="text" class="notes-input" id="d1-pullups-notes"></td>
+                    </tr>
+                    <tr>
+                        <td class="exercise-name">Seated Cable Row (Wide Grip)</td>
+                        <td class="target-reps">3 x 10-12</td>
+                        <td><input type="text" class="set-input" id="d1-cable-row-s1"></td>
+                        <td><input type="text" class="set-input" id="d1-cable-row-s2"></td>
+                        <td><input type="text" class="set-input" id="d1-cable-row-s3"></td>
+                        <td><input type="text" class="set-input" disabled></td>
+                        <td><input type="text" class="notes-input" id="d1-cable-row-notes"></td>
+                    </tr>
+                    <tr>
+                        <td class="exercise-name">Straight Arm Pulldowns</td>
+                        <td class="target-reps">3 x 15-20</td>
+                        <td><input type="text" class="set-input" id="d1-straight-arm-s1"></td>
+                        <td><input type="text" class="set-input" id="d1-straight-arm-s2"></td>
+                        <td><input type="text" class="set-input" id="d1-straight-arm-s3"></td>
+                        <td><input type="text" class="set-input" disabled></td>
+                        <td><input type="text" class="notes-input" id="d1-straight-arm-notes"></td>
+                    </tr>
+                    <tr class="section-header">
+                        <td colspan="7">FINISHING MOVES</td>
+                    </tr>
+                    <tr>
+                        <td class="exercise-name">Walking Lunges</td>
+                        <td class="target-reps">2 x 15 each</td>
+                        <td><input type="text" class="set-input" id="d1-walking-lunges-s1"></td>
+                        <td><input type="text" class="set-input" id="d1-walking-lunges-s2"></td>
+                        <td><input type="text" class="set-input" disabled></td>
+                        <td><input type="text" class="set-input" disabled></td>
+                        <td><input type="text" class="notes-input" id="d1-walking-lunges-notes"></td>
+                    </tr>
+                    <tr>
+                        <td class="exercise-name">Standing Calf Raises</td>
+                        <td class="target-reps">4 x 15-20</td>
+                        <td><input type="text" class="set-input" id="d1-calf-raises-s1"></td>
+                        <td><input type="text" class="set-input" id="d1-calf-raises-s2"></td>
+                        <td><input type="text" class="set-input" id="d1-calf-raises-s3"></td>
+                        <td><input type="text" class="set-input" id="d1-calf-raises-s4"></td>
+                        <td><input type="text" class="notes-input" id="d1-calf-raises-notes"></td>
+                    </tr>
+                    <tr>
+                        <td class="exercise-name">Single Arm Cable Row</td>
+                        <td class="target-reps">2 x 12-15 each</td>
+                        <td><input type="text" class="set-input" id="d1-single-arm-row-s1"></td>
+                        <td><input type="text" class="set-input" id="d1-single-arm-row-s2"></td>
+                        <td><input type="text" class="set-input" disabled></td>
+                        <td><input type="text" class="set-input" disabled></td>
+                        <td><input type="text" class="notes-input" id="d1-single-arm-row-notes"></td>
+                    </tr>
+                    <tr>
+                        <td class="exercise-name">Dumbbell Shrugs</td>
+                        <td class="target-reps">3 x 12-15</td>
+                        <td><input type="text" class="set-input" id="d1-db-shrugs-s1"></td>
+                        <td><input type="text" class="set-input" id="d1-db-shrugs-s2"></td>
+                        <td><input type="text" class="set-input" id="d1-db-shrugs-s3"></td>
+                        <td><input type="text" class="set-input" disabled></td>
+                        <td><input type="text" class="notes-input" id="d1-db-shrugs-notes"></td>
+                    </tr>
+                    <tr>
+                        <td class="exercise-name">Halo Raises</td>
+                        <td class="target-reps">2 x 8-12</td>
+                        <td><input type="text" class="set-input" id="d1-halo-raises-s1"></td>
+                        <td><input type="text" class="set-input" id="d1-halo-raises-s2"></td>
+                        <td><input type="text" class="set-input" disabled></td>
+                        <td><input type="text" class="set-input" disabled></td>
+                        <td><input type="text" class="notes-input" id="d1-halo-raises-notes"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Day 2: Push A (Chest Focus) -->
+        <div id="day2" class="day-content">
+            <table class="exercise-table">
+                <thead>
+                    <tr>
+                        <th>Exercise</th>
+                        <th>Target Reps</th>
+                        <th>Set 1 (Weight/Reps)</th>
+                        <th>Set 2 (Weight/Reps)</th>
+                        <th>Set 3 (Weight/Reps)</th>
+                        <th>Set 4 (Weight/Reps)</th>
+                        <th>Notes/RPE</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="section-header">
+                        <td colspan="7">PEC MINOR & UPPER CHEST DEVELOPMENT</td>
+                    </tr>
+                    <tr>
+                        <td class="exercise-name">Incline Dumbbell Press</td>
+                        <td class="target-reps">4 x 8-12</td>
+                        <td><input type="text" class="set-input" id="d2-incline-db-s1"></td>
+                        <td><input type="text" class="set-input" id="d2-incline-db-s2"></td>
+                        <td><input type="text" class="set-input" id="d2-incline-db-s3"></td>
+                        <td><input type="text" class="set-input" id="d2-incline-db-s4"></td>
+                        <td><input type="text" class="notes-input" id="d2-incline-db-notes"></td>
+                    </tr>
+                    <tr>
+                        <td class="exercise-name">Incline Cable Flyes</td>
+                        <td class="target-reps">3 x 12-15</td>
+                        <td><input type="text" class="set-input" id="d2-incline-flyes-s1"></td>
+                        <td><input type="text" class="set-input" id="d2-incline-flyes-s2"></td>
+                        <td><input type="text" class="set-input" id="d2-incline-flyes-s3"></td>
+                        <td><input type="text" class="set-input" disabled></td>
+                        <td><input type="text" class="notes-input" id="d2-incline-flyes-notes"></td>
+                    </tr>
+                    <tr>
+                        <td class="exercise-name">Decline Push-ups (feet elevated)</td>
+                        <td class="target-reps">3 x 12-20</td>
+                        <td><input type="text" class="set-input" id="d2-decline-pushups-s1"></td>
+                        <td><input type="text" class="set-input" id="d2-decline-pushups-s2"></td>
+                        <td><input type="text" class="set-input" id="d2-decline-pushups-s3"></td>
+                        <td><input type="text" class="set-input" disabled></td>
+                        <td><input type="text" class="notes-input" id="d2-decline-pushups-notes"></td>
+                    </tr>
+                    <tr class="section-header">
+                        <td colspan="7">SECONDARY CHEST & TRICEPS</td>
+                    </tr>
+                    <tr>
+                        <td class="exercise-name">Flat Dumbbell Press</td>
+                        <td class="target-reps">3 x 10-12</td>
+                        <td><input type="text" class="set-input" id="d2-flat-db-s1"></td>
+                        <td><input type="text" class="set-input" id="d2-flat-db-s2"></td>
+                        <td><input type="text" class="set-input" id="d2-flat-db-s3"></td>
+                        <td><input type="text" class="set-input" disabled></td>
+                        <td><input type="text" class="notes-input" id="d2-flat-db-notes"></td>
+                    </tr>
+                    <tr>
+                        <td class="exercise-name">Cable Crossovers</td>
+                        <td class="target-reps">3 x 15-20</td>
+                        <td><input type="text" class="set-input" id="d2-cable-cross-s1"></td>
+                        <td><input type="text" class="set-input" id="d2-cable-cross-s2"></td>
+                        <td><input type="text" class="set-input" id="d2-cable-cross-s3"></td>
+                        <td><input type="text" class="set-input" disabled></td>
+                        <td><input type="text" class="notes-input" id="d2-cable-cross-notes"></td>
+                    </tr>
+                    <tr>
+                        <td class="exercise-name">Close Grip Bench Press</td>
+                        <td class="target-reps">3 x 8-12</td>
+                        <td><input type="text" class="set-input" id="d2-close-grip-s1"></td>
+                        <td><input type="text" class="set-input" id="d2-close-grip-s2"></td>
+                        <td><input type="text" class="set-input" id="d2-close-grip-s3"></td>
+                        <td><input type="text" class="set-input" disabled></td>
+                        <td><input type="text" class="notes-input" id="d2-close-grip-notes"></td>
+                    </tr>
+                    <tr>
+                        <td class="exercise-name">Overhead Tricep Extension (DB)</td>
+                        <td class="target-reps">3 x 12-15</td>
+                        <td><input type="text" class="set-input" id="d2-overhead-tri-s1"></td>
+                        <td><input type="text" class="set-input" id="d2-overhead-tri-s2"></td>
+                        <td><input type="text" class="set-input" id="d2-overhead-tri-s3"></td>
+                        <td><input type="text" class="set-input" disabled></td>
+                        <td><input type="text" class="notes-input" id="d2-overhead-tri-notes"></td>
+                    </tr>
+                    <tr>
+                        <td class="exercise-name">Tricep Rope Pushdowns</td>
+                        <td class="target-reps">3 x 15-20</td>
+                        <td><input type="text" class="set-input" id="d2-rope-pushdowns-s1"></td>
+                        <td><input type="text" class="set-input" id="d2-rope-pushdowns-s2"></td>
+                        <td><input type="text" class="set-input" id="d2-rope-pushdowns-s3"></td>
+                        <td><input type="text" class="set-input" disabled></td>
+                        <td><input type="text" class="notes-input" id="d2-rope-pushdowns-notes"></td>
+                    </tr>
+                    <tr class="section-header">
+                        <td colspan="7">SHOULDER ACCESSORIES</td>
+                    </tr>
+                    <tr>
+                        <td class="exercise-name">Lateral Raises</td>
+                        <td class="target-reps">3 x 15-20</td>
+                        <td><input type="text" class="set-input" id="d2-lateral-raises-s1"></td>
+                        <td><input type="text" class="set-input" id="d2-lateral-raises-s2"></td>
+                        <td><input type="text" class="set-input" id="d2-lateral-raises-s3"></td>
+                        <td><input type="text" class="set-input" disabled></td>
+                        <td><input type="text" class="notes-input" id="d2-lateral-raises-notes"></td>
+                    </tr>
+                    <tr>
+                        <td class="exercise-name">Rear Delt Flyes</td>
+                        <td class="target-reps">3 x 15-20</td>
+                        <td><input type="text" class="set-input" id="d2-rear-delt-s1"></td>
+                        <td><input type="text" class="set-input" id="d2-rear-delt-s2"></td>
+                        <td><input type="text" class="set-input" id="d2-rear-delt-s3"></td>
+                        <td><input type="text" class="set-input" disabled></td>
+                        <td><input type="text" class="notes-input" id="d2-rear-delt-notes"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Day 3: Pull B (Lat Width + Thickness) -->
+        <div id="day3" class="day-content">
+            <table class="exercise-table">
+                <thead>
+                    <tr>
+                        <th>Exercise</th>
+                        <th>Target Reps</th>
+                        <th>Set 1 (Weight/Reps)</th>
+                        <th>Set 2 (Weight/Reps)</th>
+                        <th>Set 3 (Weight/Reps)</th>
+                        <th>Set 4 (Weight/Reps)</th>
+                        <th>Notes/RPE</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="section-header">
+                        <td colspan="7">LAT DEVELOPMENT PRIORITY</td>
+                    </tr>
+                    <tr>
+                        <td class="exercise-name">Rack Chins/Assisted Pull-ups</td>
+                        <td class="target-reps">4 x 6-10</td>
+                        <td><input type="text" class="set-input" id="d3-rack-chins-s1"></td>
+                        <td><input type="text" class="set-input" id="d3-rack-chins-s2"></td>
+                        <td><input type="text" class="set-input" id="d3-rack-chins-s3"></td>
+                        <td><input type="text" class="set-input" id="d3-rack-chins-s4"></td>
+                        <td><input type="text" class="notes-input" id="d3-rack-chins-notes"></td>
+                    </tr>
+                    <tr>
+                        <td class="exercise-name">Bent Over Barbell Rows</td>
+                        <td class="target-reps">4 x 8-12</td>
+                        <td><input type="text" class="set-input" id="d3-bb-rows-s1"></td>
+                        <td><input type="text" class="set-input" id="d3-bb-rows-s2"></td>
+                        <td><input type="text" class="set-input" id="d3-bb-rows-s3"></td>
+                        <td><input type="text" class="set-input" id="d3-bb-rows-s4"></td>
+                        <td><input type="text" class="notes-input" id="d3-bb-rows-notes"></td>
+                    </tr>
+                    <tr>
+                        <td class="exercise-name">Cable Rows (Wide Grip)</td>
+                        <td class="target-reps">3 x 12-15</td>
+                        <td><input type="text" class="set-input" id="d3-cable-rows-s1"></td>
+                        <td><input type="text" class="set-input" id="d3-cable-rows-s2"></td>
+                        <td><input type="text" class="set-input" id="d3-cable-rows-s3"></td>
+                        <td><input type="text" class="set-input" disabled></td>
+                        <td><input type="text" class="notes-input" id="d3-cable-rows-notes"></td>
+                    </tr>
+                    <tr>
+                        <td class="exercise-name">V-Bar Pulldowns</td>
+                        <td class="target-reps">3 x 10-12</td>
+                        <td><input type="text" class="set-input" id="d3-vbar-pulldowns-s1"></td>
+                        <td><input type="text" class="set-input" id="d3-vbar-pulldowns-s2"></td>
+                        <td><input type="text" class="set-input" id="d3-vbar-pulldowns-s3"></td>
+                        <td><input type="text" class="set-input" disabled></td>
+                        <td><input type="text" class="notes-input" id="d3-vbar-pulldowns-notes"></td>
+                    </tr>
+                    <tr class="section-header">
+                        <td colspan="7">SECONDARY PULL WORK</td>
+                    </tr>
+                    <tr>
+                        <td class="exercise-name">Face Pulls</td>
+                        <td class="target-reps">3 x 15-20</td>
+                        <td><input type="text" class="set-input" id="d3-face-pulls-s1"></td>
+                        <td><input type="text" class="set-input" id="d3-face-pulls-s2"></td>
+                        <td><input type="text" class="set-input" id="d3-face-pulls-s3"></td>
+                        <td><input type="text" class="set-input" disabled></td>
+                        <td><input type="text" class="notes-input" id="d3-face-pulls-notes"></td>
+                    </tr>
+                    <tr>
+                        <td class="exercise-name">Barbell Shrugs</td>
+                        <td class="target-reps">4 x 12-15</td>
+                        <td><input type="text" class="set-input" id="d3-bb-shrugs-s1"></td>
+                        <td><input type="text" class="set-input" id="d3-bb-shrugs-s2"></td>
+                        <td><input type="text" class="set-input" id="d3-bb-shrugs-s3"></td>
+                        <td><input type="text" class="set-input" id="d3-bb-shrugs-s4"></td>
+                        <td><input type="text" class="notes-input" id="d3-bb-shrugs-notes"></td>
+                    </tr>
+                    <tr>
+                        <td class="exercise-name">Halo Raises</td>
+                        <td class="target-reps">3 x 8-12</td>
+                        <td><input type="text" class="set-input" id="d3-halo-raises-s1"></td>
+                        <td><input type="text" class="set-input" id="d3-halo-raises-s2"></td>
+                        <td><input type="text" class="set-input" id="d3-halo-raises-s3"></td>
+                        <td><input type="text" class="set-input" disabled></td>
+                        <td><input type="text" class="notes-input" id="d3-halo-raises-notes"></td>
+                    </tr>
+                    <tr>
+                        <td class="exercise-name">Barbell Curls</td>
+                        <td class="target-reps">3 x 8-12</td>
+                        <td><input type="text" class="set-input" id="d3-bb-curls-s1"></td>
+                        <td><input type="text" class="set-input" id="d3-bb-curls-s2"></td>
+                        <td><input type="text" class="set-input" id="d3-bb-curls-s3"></td>
+                        <td><input type="text" class="set-input" disabled></td>
+                        <td><input type="text" class="notes-input" id="d3-bb-curls-notes"></td>
+                    </tr>
+                    <tr>
+                        <td class="exercise-name">Hammer Curls</td>
+                        <td class="target-reps">3 x 12-15</td>
+                        <td><input type="text" class="set-input" id="d3-hammer-curls-s1"></td>
+                        <td><input type="text" class="set-input" id="d3-hammer-curls-s2"></td>
+                        <td><input type="text" class="set-input" id="d3-hammer-curls-s3"></td>
+                        <td><input type="text" class="set-input" disabled></td>
+                        <td><input type="text" class="notes-input" id="d3-hammer-curls-notes"></td>
+                    </tr>
                     <tr>
                         <td class="exercise-name">Cable Curls</td>
                         <td class="target-reps">2 x 15-20</td>
-                        <td><input type="text" class="set-input" placeholder="40x20"></td>
-                        <td><input type="text" class="set-input" placeholder="45x18"></td>
+                        <td><input type="text" class="set-input" id="d3-cable-curls-s1"></td>
+                        <td><input type="text" class="set-input" id="d3-cable-curls-s2"></td>
                         <td><input type="text" class="set-input" disabled></td>
                         <td><input type="text" class="set-input" disabled></td>
-                        <td><input type="text" class="notes-input" placeholder="Peak contraction"></td>
+                        <td><input type="text" class="notes-input" id="d3-cable-curls-notes"></td>
                     </tr>
                     <tr class="section-header">
                         <td colspan="7">CORE WORK</td>
@@ -253,26 +662,26 @@
                     <tr>
                         <td class="exercise-name">Hanging Leg Raises</td>
                         <td class="target-reps">3 x 12-18</td>
-                        <td><input type="text" class="set-input" placeholder="BWx18"></td>
-                        <td><input type="text" class="set-input" placeholder="BWx16"></td>
-                        <td><input type="text" class="set-input" placeholder="BWx14"></td>
+                        <td><input type="text" class="set-input" id="d3-hanging-leg-s1"></td>
+                        <td><input type="text" class="set-input" id="d3-hanging-leg-s2"></td>
+                        <td><input type="text" class="set-input" id="d3-hanging-leg-s3"></td>
                         <td><input type="text" class="set-input" disabled></td>
-                        <td><input type="text" class="notes-input" placeholder="Controlled"></td>
+                        <td><input type="text" class="notes-input" id="d3-hanging-leg-notes"></td>
                     </tr>
                     <tr>
                         <td class="exercise-name">Plank Variations</td>
                         <td class="target-reps">2 x 45-60s</td>
-                        <td><input type="text" class="set-input" placeholder="60s"></td>
-                        <td><input type="text" class="set-input" placeholder="55s"></td>
+                        <td><input type="text" class="set-input" id="d3-plank-s1"></td>
+                        <td><input type="text" class="set-input" id="d3-plank-s2"></td>
                         <td><input type="text" class="set-input" disabled></td>
                         <td><input type="text" class="set-input" disabled></td>
-                        <td><input type="text" class="notes-input" placeholder="Core tight"></td>
+                        <td><input type="text" class="notes-input" id="d3-plank-notes"></td>
                     </tr>
                 </tbody>
             </table>
         </div>
 
-        <!-- Day 4: Push B (Shoulders) -->
+        <!-- Day 4: Push B (Shoulders + Legs Secondary) -->
         <div id="day4" class="day-content">
             <table class="exercise-table">
                 <thead>
@@ -291,40 +700,40 @@
                         <td colspan="7">SHOULDER DEVELOPMENT</td>
                     </tr>
                     <tr>
-                        <td class="exercise-name">Overhead Press (BB)</td>
+                        <td class="exercise-name">Overhead Press (BB or DB)</td>
                         <td class="target-reps">4 x 6-10</td>
-                        <td><input type="text" class="set-input" placeholder="95x10"></td>
-                        <td><input type="text" class="set-input" placeholder="105x8"></td>
-                        <td><input type="text" class="set-input" placeholder="115x6"></td>
-                        <td><input type="text" class="set-input" placeholder="110x8"></td>
-                        <td><input type="text" class="notes-input" placeholder="Strength focus"></td>
+                        <td><input type="text" class="set-input" id="d4-overhead-press-s1"></td>
+                        <td><input type="text" class="set-input" id="d4-overhead-press-s2"></td>
+                        <td><input type="text" class="set-input" id="d4-overhead-press-s3"></td>
+                        <td><input type="text" class="set-input" id="d4-overhead-press-s4"></td>
+                        <td><input type="text" class="notes-input" id="d4-overhead-press-notes"></td>
                     </tr>
                     <tr>
                         <td class="exercise-name">Arnold Press</td>
                         <td class="target-reps">3 x 10-12</td>
-                        <td><input type="text" class="set-input" placeholder="35x12"></td>
-                        <td><input type="text" class="set-input" placeholder="40x11"></td>
-                        <td><input type="text" class="set-input" placeholder="45x10"></td>
+                        <td><input type="text" class="set-input" id="d4-arnold-press-s1"></td>
+                        <td><input type="text" class="set-input" id="d4-arnold-press-s2"></td>
+                        <td><input type="text" class="set-input" id="d4-arnold-press-s3"></td>
                         <td><input type="text" class="set-input" disabled></td>
-                        <td><input type="text" class="notes-input" placeholder="Full rotation"></td>
+                        <td><input type="text" class="notes-input" id="d4-arnold-press-notes"></td>
                     </tr>
                     <tr>
                         <td class="exercise-name">Lateral Raise Variations</td>
                         <td class="target-reps">4 x 12-20</td>
-                        <td><input type="text" class="set-input" placeholder="15x20"></td>
-                        <td><input type="text" class="set-input" placeholder="17.5x18"></td>
-                        <td><input type="text" class="set-input" placeholder="20x15"></td>
-                        <td><input type="text" class="set-input" placeholder="12.5x20"></td>
-                        <td><input type="text" class="notes-input" placeholder="Cable & DB mix"></td>
+                        <td><input type="text" class="set-input" id="d4-lateral-raise-s1"></td>
+                        <td><input type="text" class="set-input" id="d4-lateral-raise-s2"></td>
+                        <td><input type="text" class="set-input" id="d4-lateral-raise-s3"></td>
+                        <td><input type="text" class="set-input" id="d4-lateral-raise-s4"></td>
+                        <td><input type="text" class="notes-input" id="d4-lateral-raise-notes"></td>
                     </tr>
                     <tr>
                         <td class="exercise-name">Upright Rows</td>
                         <td class="target-reps">3 x 12-15</td>
-                        <td><input type="text" class="set-input" placeholder="65x15"></td>
-                        <td><input type="text" class="set-input" placeholder="70x14"></td>
-                        <td><input type="text" class="set-input" placeholder="75x12"></td>
+                        <td><input type="text" class="set-input" id="d4-upright-rows-s1"></td>
+                        <td><input type="text" class="set-input" id="d4-upright-rows-s2"></td>
+                        <td><input type="text" class="set-input" id="d4-upright-rows-s3"></td>
                         <td><input type="text" class="set-input" disabled></td>
-                        <td><input type="text" class="notes-input" placeholder="Wide grip"></td>
+                        <td><input type="text" class="notes-input" id="d4-upright-rows-notes"></td>
                     </tr>
                     <tr class="section-header">
                         <td colspan="7">SECONDARY LEG WORK</td>
@@ -332,29 +741,29 @@
                     <tr>
                         <td class="exercise-name">Front Squats</td>
                         <td class="target-reps">3 x 10-12</td>
-                        <td><input type="text" class="set-input" placeholder="135x12"></td>
-                        <td><input type="text" class="set-input" placeholder="155x11"></td>
-                        <td><input type="text" class="set-input" placeholder="175x10"></td>
+                        <td><input type="text" class="set-input" id="d4-front-squats-s1"></td>
+                        <td><input type="text" class="set-input" id="d4-front-squats-s2"></td>
+                        <td><input type="text" class="set-input" id="d4-front-squats-s3"></td>
                         <td><input type="text" class="set-input" disabled></td>
-                        <td><input type="text" class="notes-input" placeholder="Quad stimulus"></td>
+                        <td><input type="text" class="notes-input" id="d4-front-squats-notes"></td>
                     </tr>
                     <tr>
                         <td class="exercise-name">Leg Press</td>
                         <td class="target-reps">3 x 15-20</td>
-                        <td><input type="text" class="set-input" placeholder="315x20"></td>
-                        <td><input type="text" class="set-input" placeholder="365x18"></td>
-                        <td><input type="text" class="set-input" placeholder="405x15"></td>
+                        <td><input type="text" class="set-input" id="d4-leg-press-s1"></td>
+                        <td><input type="text" class="set-input" id="d4-leg-press-s2"></td>
+                        <td><input type="text" class="set-input" id="d4-leg-press-s3"></td>
                         <td><input type="text" class="set-input" disabled></td>
-                        <td><input type="text" class="notes-input" placeholder="High reps"></td>
+                        <td><input type="text" class="notes-input" id="d4-leg-press-notes"></td>
                     </tr>
                     <tr>
                         <td class="exercise-name">Leg Curls</td>
                         <td class="target-reps">3 x 12-15</td>
-                        <td><input type="text" class="set-input" placeholder="90x15"></td>
-                        <td><input type="text" class="set-input" placeholder="100x14"></td>
-                        <td><input type="text" class="set-input" placeholder="110x12"></td>
+                        <td><input type="text" class="set-input" id="d4-leg-curls-s1"></td>
+                        <td><input type="text" class="set-input" id="d4-leg-curls-s2"></td>
+                        <td><input type="text" class="set-input" id="d4-leg-curls-s3"></td>
                         <td><input type="text" class="set-input" disabled></td>
-                        <td><input type="text" class="notes-input" placeholder="Hamstring focus"></td>
+                        <td><input type="text" class="notes-input" id="d4-leg-curls-notes"></td>
                     </tr>
                     <tr class="section-header">
                         <td colspan="7">TRICEP FINISHERS</td>
@@ -362,43 +771,87 @@
                     <tr>
                         <td class="exercise-name">Dips</td>
                         <td class="target-reps">3 x 10-15</td>
-                        <td><input type="text" class="set-input" placeholder="BWx15"></td>
-                        <td><input type="text" class="set-input" placeholder="BWx13"></td>
-                        <td><input type="text" class="set-input" placeholder="BWx11"></td>
+                        <td><input type="text" class="set-input" id="d4-dips-s1"></td>
+                        <td><input type="text" class="set-input" id="d4-dips-s2"></td>
+                        <td><input type="text" class="set-input" id="d4-dips-s3"></td>
                         <td><input type="text" class="set-input" disabled></td>
-                        <td><input type="text" class="notes-input" placeholder="Chest lean"></td>
+                        <td><input type="text" class="notes-input" id="d4-dips-notes"></td>
                     </tr>
                     <tr>
                         <td class="exercise-name">Diamond Push-ups</td>
                         <td class="target-reps">2 x 12-20</td>
-                        <td><input type="text" class="set-input" placeholder="BWx20"></td>
-                        <td><input type="text" class="set-input" placeholder="BWx16"></td>
+                        <td><input type="text" class="set-input" id="d4-diamond-pushups-s1"></td>
+                        <td><input type="text" class="set-input" id="d4-diamond-pushups-s2"></td>
                         <td><input type="text" class="set-input" disabled></td>
                         <td><input type="text" class="set-input" disabled></td>
-                        <td><input type="text" class="notes-input" placeholder="Tricep focus"></td>
+                        <td><input type="text" class="notes-input" id="d4-diamond-pushups-notes"></td>
                     </tr>
                     <tr>
                         <td class="exercise-name">Tricep Kickbacks</td>
                         <td class="target-reps">2 x 15-20</td>
-                        <td><input type="text" class="set-input" placeholder="15x20"></td>
-                        <td><input type="text" class="set-input" placeholder="17.5x18"></td>
+                        <td><input type="text" class="set-input" id="d4-tricep-kickbacks-s1"></td>
+                        <td><input type="text" class="set-input" id="d4-tricep-kickbacks-s2"></td>
                         <td><input type="text" class="set-input" disabled></td>
                         <td><input type="text" class="set-input" disabled></td>
-                        <td><input type="text" class="notes-input" placeholder="Peak squeeze"></td>
+                        <td><input type="text" class="notes-input" id="d4-tricep-kickbacks-notes"></td>
                     </tr>
                 </tbody>
             </table>
         </div>
 
-        <div class="notes-section">
-            <h3>📝 Daily Notes & Observations</h3>
-            <textarea class="notes-textarea" placeholder="Record today's observations: energy levels, form cues, technique improvements, RPE notes, or any adjustments needed for next session..."></textarea>
+        <div class="button-group">
+            <button class="button" onclick="saveProgress()">💾 Save Progress</button>
+            <button class="button" onclick="loadProgress()">📂 Load Saved Data</button>
+            <button class="button" onclick="exportToCSV()">📊 Export to CSV</button>
+            <button class="button clear" onclick="clearAllData()">🗑️ Clear All</button>
         </div>
 
-        <button class="export-btn" onclick="exportToCSV()">📊 Export Session Data</button>
+        <div class="notes-section">
+            <h3>📝 Daily Notes & Observations</h3>
+            <textarea class="notes-textarea" id="daily-notes" placeholder="Record today's observations: energy levels, form cues, technique improvements, RPE notes, or any adjustments needed for next session..."></textarea>
+        </div>
     </div>
 
     <script>
+        // Week periodization information
+        const weekInfo = {
+            '1': {
+                focus: 'Progressive overload',
+                repRanges: '8-12 for compounds, 12-15 for isolation',
+                goal: 'Build work capacity'
+            },
+            '2': {
+                focus: 'Increase training volume',
+                repRanges: '10-15 for most exercises',
+                goal: 'Add drop sets and supersets'
+            },
+            '3': {
+                focus: 'Muscle quality and separation',
+                repRanges: '12-20 (higher rep ranges)',
+                goal: 'More isolation work'
+            },
+            '4': {
+                focus: 'Maintain muscle while improving definition',
+                repRanges: '15-25 (very high reps)',
+                goal: 'Focus on muscle pumps and vascularity'
+            }
+        };
+
+        // Update week information display
+        function updateWeekInfo() {
+            const weekSelect = document.getElementById('week-select');
+            const selectedWeek = weekSelect.value;
+            const info = weekInfo[selectedWeek];
+            
+            const weekInfoDiv = document.getElementById('week-info');
+            weekInfoDiv.innerHTML = `
+                <p><strong>Focus:</strong> ${info.focus}</p>
+                <p><strong>Rep Ranges:</strong> ${info.repRanges}</p>
+                <p><strong>Goal:</strong> ${info.goal}</p>
+            `;
+        }
+
+        // Show/hide workout days
         function showDay(dayNumber) {
             // Hide all day contents
             const allDays = document.querySelectorAll('.day-content');
@@ -413,13 +866,73 @@
             document.querySelectorAll('.tab')[dayNumber - 1].classList.add('active');
         }
 
+        // Save progress to localStorage
+        function saveProgress() {
+            const workoutData = {
+                week: document.getElementById('week-select').value,
+                exercises: {},
+                notes: document.getElementById('daily-notes').value,
+                lastSaved: new Date().toISOString()
+            };
+
+            // Get all input values
+            const inputs = document.querySelectorAll('.set-input, .notes-input');
+            inputs.forEach(input => {
+                if (input.id && input.value) {
+                    workoutData.exercises[input.id] = input.value;
+                }
+            });
+
+            // Save to localStorage
+            localStorage.setItem('contestPrepWorkout', JSON.stringify(workoutData));
+            
+            // Show success message
+            showStatus('Progress saved successfully!', 'success');
+        }
+
+        // Load saved progress
+        function loadProgress() {
+            const saved = localStorage.getItem('contestPrepWorkout');
+            if (saved) {
+                const workoutData = JSON.parse(saved);
+                
+                // Load week selection
+                if (workoutData.week) {
+                    document.getElementById('week-select').value = workoutData.week;
+                    updateWeekInfo(); // Update the week info display
+                }
+                
+                // Load exercise data
+                if (workoutData.exercises) {
+                    Object.keys(workoutData.exercises).forEach(inputId => {
+                        const input = document.getElementById(inputId);
+                        if (input) {
+                            input.value = workoutData.exercises[inputId];
+                        }
+                    });
+                }
+                
+                // Load notes
+                if (workoutData.notes) {
+                    document.getElementById('daily-notes').value = workoutData.notes;
+                }
+                
+                showStatus(`Data loaded from ${new Date(workoutData.lastSaved).toLocaleDateString()}`, 'success');
+            } else {
+                showStatus('No saved data found', 'error');
+            }
+        }
+
+        // Export to CSV
         function exportToCSV() {
             const activeDay = document.querySelector('.day-content.active');
             const dayName = document.querySelector('.tab.active').textContent;
-            const week = document.getElementById('week-select').value;
-            const notes = document.querySelector('.notes-textarea').value;
+            const week = document.getElementById('week-select').selectedOptions[0].text;
             
-            let csv = `Exercise,Target Reps,Set 1,Set 2,Set 3,Set 4,Notes\n`;
+            let csv = `16-Week Contest Prep Workout Tracker\n`;
+            csv += `${week}\n`;
+            csv += `${dayName}\n\n`;
+            csv += `Exercise,Target Reps,Set 1,Set 2,Set 3,Set 4,Notes\n`;
             
             const rows = activeDay.querySelectorAll('tbody tr:not(.section-header)');
             rows.forEach(row => {
@@ -431,14 +944,15 @@
                     const set2 = cells[3].querySelector('input').value || '';
                     const set3 = cells[4].querySelector('input').value || '';
                     const set4 = cells[5].querySelector('input').value || '';
-                    const exerciseNotes = cells[6].querySelector('input').value || '';
+                    const notes = cells[6].querySelector('input').value || '';
                     
-                    csv += `"${exercise}","${targetReps}","${set1}","${set2}","${set3}","${set4}","${exerciseNotes}"\n`;
+                    csv += `"${exercise}","${targetReps}","${set1}","${set2}","${set3}","${set4}","${notes}"\n`;
                 }
             });
             
-            if (notes) {
-                csv += `\nDaily Notes:,"${notes}"\n`;
+            const dailyNotes = document.getElementById('daily-notes').value;
+            if (dailyNotes) {
+                csv += `\nDaily Notes:\n"${dailyNotes}"\n`;
             }
             
             // Create download
@@ -447,46 +961,79 @@
             const a = document.createElement('a');
             a.style.display = 'none';
             a.href = url;
-            a.download = `Contest_Prep_${dayName.replace(/[^a-zA-Z0-9]/g, '_')}_Week${week}.csv`;
+            a.download = `Contest_Prep_${dayName.replace(/[^a-zA-Z0-9]/g, '_')}_${new Date().toISOString().split('T')[0]}.csv`;
             document.body.appendChild(a);
             a.click();
             window.URL.revokeObjectURL(url);
             document.body.removeChild(a);
             
-            alert('Workout data exported successfully!');
+            showStatus('Workout exported successfully!', 'success');
         }
 
-        // Auto-save functionality
-        function autoSave() {
-            const data = {};
-            const inputs = document.querySelectorAll('input, textarea');
-            inputs.forEach((input, index) => {
-                data[`input_${index}`] = input.value;
-            });
-            localStorage.setItem('contestPrepWorkout', JSON.stringify(data));
-        }
-
-        function loadSavedData() {
-            const saved = localStorage.getItem('contestPrepWorkout');
-            if (saved) {
-                const data = JSON.parse(saved);
-                const inputs = document.querySelectorAll('input, textarea');
-                inputs.forEach((input, index) => {
-                    if (data[`input_${index}`]) {
-                        input.value = data[`input_${index}`];
-                    }
+        // Clear all data
+        function clearAllData() {
+            if (confirm('Are you sure you want to clear all data? This action cannot be undone.')) {
+                // Clear all inputs
+                const inputs = document.querySelectorAll('.set-input, .notes-input');
+                inputs.forEach(input => {
+                    input.value = '';
                 });
+                
+                // Clear notes
+                document.getElementById('daily-notes').value = '';
+                
+                // Clear localStorage
+                localStorage.removeItem('contestPrepWorkout');
+                
+                showStatus('All data cleared', 'success');
             }
         }
 
-        // Auto-save every 30 seconds
-        setInterval(autoSave, 30000);
-        
-        // Save on input change
-        document.addEventListener('input', autoSave);
-        
+        // Show status message
+        function showStatus(message, type) {
+            const statusDiv = document.getElementById('status-message');
+            statusDiv.textContent = message;
+            statusDiv.className = `status-message ${type}`;
+            statusDiv.style.display = 'block';
+            
+            setTimeout(() => {
+                statusDiv.style.display = 'none';
+            }, 3000);
+        }
+
+        // Auto-save functionality
+        let autoSaveTimer;
+        function autoSave() {
+            clearTimeout(autoSaveTimer);
+            autoSaveTimer = setTimeout(() => {
+                saveProgress();
+                console.log('Auto-saved at', new Date().toLocaleTimeString());
+            }, 30000); // Save every 30 seconds of inactivity
+        }
+
+        // Add event listeners for auto-save
+        document.addEventListener('input', (e) => {
+            if (e.target.matches('.set-input, .notes-input, .notes-textarea')) {
+                autoSave();
+            }
+        });
+
         // Load saved data on page load
-        window.addEventListener('load', loadSavedData);
+        window.addEventListener('load', () => {
+            const saved = localStorage.getItem('contestPrepWorkout');
+            if (saved) {
+                loadProgress();
+            }
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Ctrl/Cmd + S to save
+            if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                e.preventDefault();
+                saveProgress();
+            }
+        });
     </script>
 </body>
 </html>
