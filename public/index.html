@@ -5,209 +5,225 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>16-Week Contest Prep - 4-Day Split Program</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * { box-sizing: border-box; }
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 20px;
       background-color: #f5f5f5;
-      min-height: 100vh;
-      color: #222;
     }
     .container {
-      max-width: 1000px;
+      max-width: 1400px;
       margin: 0 auto;
-      padding: 16px;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
     h1 {
       text-align: center;
       color: #2c3e50;
-      margin-bottom: 16px;
-      font-size: 2rem;
+      margin-bottom: 30px;
+      font-size: 28px;
     }
     .week-selector {
       text-align: center;
-      margin-bottom: 1.2rem;
+      margin-bottom: 20px;
     }
     .week-selector select {
       padding: 8px 16px;
-      font-size: 1rem;
+      font-size: 16px;
       border: 2px solid #3498db;
-      border-radius: 6px;
+      border-radius: 5px;
       background: white;
     }
     .week-info {
       background: #e8f4f8;
       border: 1px solid #3498db;
       border-radius: 8px;
-      padding: 1rem;
-      margin: 1rem 0;
+      padding: 15px;
+      margin: 20px auto;
+      max-width: 600px;
       text-align: center;
-      max-width: 500px;
-      margin-left: auto;
-      margin-right: auto;
     }
-    .status-message {
-      text-align: center;
-      padding: 10px;
-      margin: 20px 0;
-      border-radius: 8px;
-      font-weight: 600;
-      display: none;
-    }
-    .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-    .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+    .week-info p { margin: 5px 0; color: #2c3e50; }
+    .week-info strong { color: #3498db; }
     .day-tabs {
       display: flex;
       justify-content: center;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #ecf0f1;
       flex-wrap: wrap;
-      margin-bottom: 1.2rem;
-      gap: 8px;
     }
     .tab {
-      padding: 0.7em 1.3em;
+      padding: 12px 24px;
       cursor: pointer;
       border: none;
-      background: #f0f4fa;
-      font-size: 1rem;
-      font-weight: 600;
-      color: #3498db;
-      border-radius: 5px 5px 0 0;
+      background: none;
+      font-size: 16px;
+      font-weight: bold;
+      color: #7f8c8d;
       border-bottom: 3px solid transparent;
-      transition: all 0.2s;
+      transition: all 0.3s ease;
     }
-    .tab.active, .tab:focus {
-      color: #fff;
-      background: linear-gradient(135deg, #3498db, #2980b9);
-      border-bottom: 3px solid #2980b9;
-      outline: none;
+    .tab.active {
+      color: #3498db;
+      border-bottom-color: #3498db;
     }
-    .exercises-list {
-      display: flex;
-      flex-direction: column;
-      gap: 1.2em;
-    }
-    .exercise-card {
-      background: #fff;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-      padding: 1em 1.2em;
-      display: flex;
-      flex-direction: column;
-      gap: 0.7em;
-    }
-    .exercise-title {
-      font-weight: bold;
-      font-size: 1.1em;
-      color: #2c3e50;
-    }
-    .exercise-section {
-      padding: 0.4em 0;
-      font-weight: bold;
-      color: #fff;
-      background: linear-gradient(135deg, #2c3e50, #34495e);
-      border-radius: 5px;
-      text-align: center;
-      margin-bottom: 0.7em;
-      font-size: 1em;
-      letter-spacing: 1px;
-    }
-    .sets-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.7em;
-      align-items: center;
-    }
-    .sets-label {
-      font-size: 0.97em;
+    .tab:hover {
       color: #2980b9;
-      font-weight: 500;
-      min-width: 90px;
+      background-color: #f8f9fa;
     }
-    .target-reps {
-      font-size: 0.97em;
+    .day-content { display: none; }
+    .day-content.active { display: block; }
+
+    /* TABLE VIEW for Desktop */
+    .exercise-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 30px;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+    }
+    .exercise-table th {
+      background: linear-gradient(135deg, #3498db, #2980b9);
+      color: white;
+      padding: 15px 12px;
+      text-align: left;
       font-weight: bold;
-      color: #27ae60;
-      margin-right: 1em;
+      font-size: 14px;
     }
-    .target-reps.compound { color: #2980b9;}
-    .target-reps.isolation { color: #c0392b;}
-    .set-input, .notes-input {
-      width: 60px;
+    .exercise-table td {
+      padding: 12px;
+      border-bottom: 1px solid #ecf0f1;
+    }
+    .exercise-table tbody tr:hover {
+      background-color: #f8f9fa;
+    }
+    .exercise-name {
+      font-weight: bold;
+      color: #2c3e50;
+      min-width: 180px;
+    }
+    .set-input {
+      width: 70px;
       padding: 6px;
-      border: 1px solid #ccc;
+      border: 1px solid #ddd;
       border-radius: 4px;
-      font-size: 1em;
       text-align: center;
+      font-size: 14px;
+    }
+    .set-input:focus {
+      outline: none;
+      border-color: #3498db;
+      box-shadow: 0 0 5px rgba(52,152,219,0.3);
     }
     .notes-input {
-      width: 110px;
-      text-align: left;
+      width: 120px;
+      padding: 6px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
     }
-    @media (max-width: 600px) {
-      .container {
-        padding: 4px;
-      }
-      h1 {
-        font-size: 1.2rem;
-        padding: 6px 0;
-      }
-      .week-info {
-        padding: 0.6rem;
-        font-size: 0.97em;
-      }
+    .target-reps {
+      color: #27ae60;
+      font-weight: bold;
+      text-align: center;
+    }
+    .target-reps.compound { color: #2980b9; }
+    .target-reps.isolation { color: #c0392b; }
+    .section-header {
+      background: linear-gradient(135deg, #2c3e50, #34495e);
+      color: white;
+      text-align: center;
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    /* CARDS for Mobile */
+    .mobile-cards { display: none; }
+    @media (max-width: 768px) {
+      .exercise-table { display: none; }
+      .mobile-cards { display: block; }
       .exercise-card {
-        padding: 0.7em 0.5em;
-      }
-      .sets-row {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.3em;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+        padding: 1em 1em 0.5em 1em;
+        margin-bottom: 18px;
       }
       .exercise-section {
+        background: linear-gradient(135deg, #2c3e50, #34495e);
+        color: #fff;
+        border-radius: 5px;
+        font-weight: bold;
+        font-size: 1em;
+        text-align: center;
+        margin-bottom: 8px;
+        padding: 7px 0;
+      }
+      .exercise-title { font-weight: bold; font-size: 1.10em; color: #2c3e50; }
+      .input-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 6px 0 10px 0;
+      }
+      .input-row label {
         font-size: 0.98em;
-        padding: 0.3em 0;
+        min-width: 65px;
+        color: #2980b9;
       }
       .set-input, .notes-input {
-        width: 90vw;
-        min-width: 90px;
-        max-width: 100%;
+        width: 100%;
+        max-width: 110px;
+        margin-right: 0;
+      }
+      .notes-input { max-width: 175px;}
+      .target-reps {
+        display: inline-block;
+        font-size: 0.97em;
+        font-weight: bold;
+        margin-bottom: 6px;
+        margin-right: 1em;
       }
     }
+    @media (max-width: 768px) {
+      .mobile-cards { margin-bottom: 25px;}
+    }
+
     .button-group {
-      display: flex;
-      justify-content: center;
-      gap: 1em;
-      margin: 2em 0 1em 0;
-      flex-wrap: wrap;
+      text-align: center;
+      margin: 30px 0;
     }
     .button {
       background: linear-gradient(135deg, #27ae60, #2ecc71);
       color: white;
       border: none;
-      padding: 0.8em 2em;
-      border-radius: 8px;
-      font-size: 1.1em;
+      padding: 12px 24px;
+      border-radius: 6px;
+      font-size: 16px;
       font-weight: bold;
       cursor: pointer;
-      transition: all 0.2s;
+      margin: 0 10px;
+      transition: all 0.3s ease;
     }
     .button:hover {
       transform: translateY(-2px);
-      box-shadow: 0 5px 12px rgba(39, 174, 96, 0.15);
+      box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
     }
     .button.clear {
       background: linear-gradient(135deg, #e74c3c, #c0392b);
     }
     .button.clear:hover {
-      box-shadow: 0 5px 12px rgba(231, 76, 60, 0.2);
+      box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
     }
     .notes-section {
       background: #f8f9fa;
-      padding: 1em;
+      padding: 15px;
       border-radius: 8px;
-      margin-top: 1.5em;
-      max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
+      margin-top: 20px;
     }
     .notes-section h3 {
       color: #2c3e50;
@@ -221,7 +237,24 @@
       border-radius: 4px;
       resize: vertical;
       font-family: inherit;
-      font-size: 1em;
+    }
+    .status-message {
+      text-align: center;
+      padding: 10px;
+      margin: 20px 0;
+      border-radius: 8px;
+      font-weight: 600;
+      display: none;
+    }
+    .success {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+    .error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
     }
   </style>
 </head>
@@ -250,454 +283,393 @@
       <button class="tab" onclick="showDay(4)">Day 4: Push B (Shoulders)</button>
     </div>
 
-    <!-- Day 1 -->
-    <div class="day-content" id="day1" style="display:block;">
-      <div class="exercises-list">
-        <div class="exercise-section">PRIMARY LEG MOVEMENTS</div>
-        <div class="exercise-card">
-          <div class="exercise-title">Hex Deadlift</div>
-          <div class="sets-row">
-            <span class="target-reps compound">4 x 8-12</span>
-            <input class="set-input" placeholder="Set 1" type="text">
-            <input class="set-input" placeholder="Set 2" type="text">
-            <input class="set-input" placeholder="Set 3" type="text">
-            <input class="set-input" placeholder="Set 4" type="text">
-            <input class="notes-input" placeholder="Notes/RPE" type="text">
-          </div>
-        </div>
-        <div class="exercise-card">
-          <div class="exercise-title">Bulgarian Split Squats</div>
-          <div class="sets-row">
-            <span class="target-reps compound">3 x 10-12 each</span>
-            <input class="set-input" placeholder="Set 1" type="text">
-            <input class="set-input" placeholder="Set 2" type="text">
-            <input class="set-input" placeholder="Set 3" type="text">
-            <input class="notes-input" placeholder="Notes/RPE" type="text">
-          </div>
-        </div>
-        <div class="exercise-card">
-          <div class="exercise-title">Romanian Deadlifts</div>
-          <div class="sets-row">
-            <span class="target-reps compound">3 x 12-15</span>
-            <input class="set-input" placeholder="Set 1" type="text">
-            <input class="set-input" placeholder="Set 2" type="text">
-            <input class="set-input" placeholder="Set 3" type="text">
-            <input class="notes-input" placeholder="Notes/RPE" type="text">
-          </div>
-        </div>
-        <div class="exercise-section">LAT-FOCUSED PULL WORK</div>
-        <div class="exercise-card">
-          <div class="exercise-title">Wide Grip Pull-ups/Lat Pulldown</div>
-          <div class="sets-row">
-            <span class="target-reps isolation">4 x 8-12</span>
-            <input class="set-input" placeholder="Set 1" type="text">
-            <input class="set-input" placeholder="Set 2" type="text">
-            <input class="set-input" placeholder="Set 3" type="text">
-            <input class="set-input" placeholder="Set 4" type="text">
-            <input class="notes-input" placeholder="Notes/RPE" type="text">
-          </div>
-        </div>
-        <div class="exercise-card">
-          <div class="exercise-title">Seated Cable Row (Wide Grip)</div>
-          <div class="sets-row">
-            <span class="target-reps isolation">3 x 10-12</span>
-            <input class="set-input" placeholder="Set 1" type="text">
-            <input class="set-input" placeholder="Set 2" type="text">
-            <input class="set-input" placeholder="Set 3" type="text">
-            <input class="notes-input" placeholder="Notes/RPE" type="text">
-          </div>
-        </div>
-        <div class="exercise-card">
-          <div class="exercise-title">Straight Arm Pulldowns</div>
-          <div class="sets-row">
-            <span class="target-reps isolation">3 x 15-20</span>
-            <input class="set-input" placeholder="Set 1" type="text">
-            <input class="set-input" placeholder="Set 2" type="text">
-            <input class="set-input" placeholder="Set 3" type="text">
-            <input class="notes-input" placeholder="Notes/RPE" type="text">
-          </div>
-        </div>
-        <div class="exercise-section">FINISHING MOVES</div>
-        <div class="exercise-card">
-          <div class="exercise-title">Walking Lunges</div>
-          <div class="sets-row">
-            <span class="target-reps isolation">2 x 15 each</span>
-            <input class="set-input" placeholder="Set 1" type="text">
-            <input class="set-input" placeholder="Set 2" type="text">
-            <input class="notes-input" placeholder="Notes/RPE" type="text">
-          </div>
-        </div>
-        <div class="exercise-card">
-          <div class="exercise-title">Standing Calf Raises</div>
-          <div class="sets-row">
-            <span class="target-reps isolation">4 x 15-20</span>
-            <input class="set-input" placeholder="Set 1" type="text">
-            <input class="set-input" placeholder="Set 2" type="text">
-            <input class="set-input" placeholder="Set 3" type="text">
-            <input class="set-input" placeholder="Set 4" type="text">
-            <input class="notes-input" placeholder="Notes/RPE" type="text">
-          </div>
-        </div>
-        <div class="exercise-card">
-          <div class="exercise-title">Single Arm Cable Row</div>
-          <div class="sets-row">
-            <span class="target-reps isolation">2 x 12-15 each</span>
-            <input class="set-input" placeholder="Set 1" type="text">
-            <input class="set-input" placeholder="Set 2" type="text">
-            <input class="notes-input" placeholder="Notes/RPE" type="text">
-          </div>
-        </div>
-        <div class="exercise-card">
-          <div class="exercise-title">Dumbbell Shrugs</div>
-          <div class="sets-row">
-            <span class="target-reps isolation">3 x 12-15</span>
-            <input class="set-input" placeholder="Set 1" type="text">
-            <input class="set-input" placeholder="Set 2" type="text">
-            <input class="set-input" placeholder="Set 3" type="text">
-            <input class="notes-input" placeholder="Notes/RPE" type="text">
-          </div>
-        </div>
-        <div class="exercise-card">
-          <div class="exercise-title">Halo Raises</div>
-          <div class="sets-row">
-            <span class="target-reps isolation">2 x 8-12</span>
-            <input class="set-input" placeholder="Set 1" type="text">
-            <input class="set-input" placeholder="Set 2" type="text">
-            <input class="notes-input" placeholder="Notes/RPE" type="text">
-          </div>
-        </div>
-      </div>
+    <!-- --------- DAY CONTENTS: TABLES + MOBILE CARDS --------- -->
+    <!-- Loop for all days -->
+    <div id="days-root">
+      <!-- Rendered by JS -->
     </div>
-    <!-- Day 2 -->
-    <div class="day-content" id="day2" style="display:none;">
-      <div class="exercises-list">
-        <div class="exercise-section">PEC MINOR & UPPER CHEST DEVELOPMENT</div>
-        <div class="exercise-card">
-          <div class="exercise-title">Incline Dumbbell Press</div>
-          <div class="sets-row">
-            <span class="target-reps compound">4 x 8-12</span>
-            <input class="set-input" placeholder="Set 1" type="text">
-            <input class="set-input" placeholder="Set 2" type="text">
-            <input class="set-input" placeholder="Set 3" type="text">
-            <input class="set-input" placeholder="Set 4" type="text">
-            <input class="notes-input" placeholder="Notes/RPE" type="text">
-          </div>
-        </div>
-        <div class="exercise-card">
-          <div class="exercise-title">Incline Cable Flyes</div>
-          <div class="sets-row">
-            <span class="target-reps isolation">3 x 12-15</span>
-            <input class="set-input" placeholder="Set 1" type="text">
-            <input class="set-input" placeholder="Set 2" type="text">
-            <input class="set-input" placeholder="Set 3" type="text">
-            <input class="notes-input" placeholder="Notes/RPE" type="text">
-          </div>
-        </div>
-        <div class="exercise-card">
-          <div class="exercise-title">Decline Push-ups (feet elevated)</div>
-          <div class="sets-row">
-            <span class="target-reps isolation">3 x 12-20</span>
-            <input class="set-input" placeholder="Set 1" type="text">
-            <input class="set-input" placeholder="Set 2" type="text">
-            <input class="set-input" placeholder="Set 3" type="text">
-            <input class="notes-input" placeholder="Notes/RPE" type="text">
-          </div>
-        </div>
-        <div class="exercise-section">SECONDARY CHEST & TRICEPS</div>
-        <div class="exercise-card">
-          <div class="exercise-title">Flat Dumbbell Press</div>
-          <div class="sets-row">
-            <span class="target-reps compound">3 x 10-12</span>
-            <input class="set-input" placeholder="Set 1" type="text">
-            <input class="set-input" placeholder="Set 2" type="text">
-            <input class="set-input" placeholder="Set 3" type="text">
-            <input class="notes-input" placeholder="Notes/RPE" type="text">
-          </div>
-        </div>
-        <div class="exercise-card">
-          <div class="exercise-title">Cable Crossovers</div>
-          <div class="sets-row">
-            <span class="target-reps isolation">3 x 15-20</span>
-            <input class="set-input" placeholder="Set 1" type="text">
-            <input class="set-input" placeholder="Set 2" type="text">
-            <input class="set-input" placeholder="Set 3" type="text">
-            <input class="notes-input" placeholder="Notes/RPE" type="text">
-          </div>
-        </div>
-        <div class="exercise-card">
-          <div class="exercise-title">Close Grip Bench Press</div>
-          <div class="sets-row">
-            <span class="target-reps compound">3 x 8-12</span>
-            <input class="set-input" placeholder="Set 1" type="text">
-            <input class="set-input" placeholder="Set 2" type="text">
-            <input class="set-input" placeholder="Set 3" type="text">
-            <input class="notes-input" placeholder="Notes/RPE" type="text">
-          </div>
-        </div>
-        <div class="exercise-card">
-          <div class="exercise-title">Overhead Tricep Extension (DB)</div>
-          <div class="sets-row">
-            <span class="target-reps isolation">3 x 12-15</span>
-            <input class="set-input" placeholder="Set 1" type="text">
-            <input class="set-input" placeholder="Set 2" type="text">
-            <input class="set-input" placeholder="Set 3" type="text">
-            <input class="notes-input" placeholder="Notes/RPE" type="text">
-          </div>
-        </div>
-        <div class="exercise-card">
-          <div class="exercise-title">Tricep Rope Pushdowns</div>
-          <div class="sets-row">
-            <span class="target-reps isolation">3 x 15-20</span>
-            <input class="set-input" placeholder="Set 1" type="text">
-            <input class="set-input" placeholder="Set 2" type="text">
-            <input class="set-input" placeholder="Set 3" type="text">
-            <input class="notes-input" placeholder="Notes/RPE" type="text">
-          </div>
-        </div>
-        <div class="exercise-section">SHOULDER ACCESSORIES</div>
-        <div class="exercise-card">
-          <div class="exercise-title">Lateral Raises</div>
-          <div class="sets-row">
-            <span class="target-reps isolation">3 x 15-20</span>
-            <input class="set-input" placeholder="Set 1" type="text">
-            <input class="set-input" placeholder="Set 2" type="text">
-            <input class="set-input" placeholder="Set 3" type="text">
-            <input class="notes-input" placeholder="Notes/RPE" type="text">
-          </div>
-        </div>
-        <div class="exercise-card">
-          <div class="exercise-title">Rear Delt Flyes</div>
-          <div class="sets-row">
-            <span class="target-reps isolation">3 x 15-20</span>
-            <input class="set-input" placeholder="Set 1" type="text">
-            <input class="set-input" placeholder="Set 2" type="text">
-            <input class="set-input" placeholder="Set 3" type="text">
-            <input class="notes-input" placeholder="Notes/RPE" type="text">
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- Day 3 -->
-    <div class="day-content" id="day3" style="display:none;">
-      <div class="exercises-list">
-        <div class="exercise-section">LAT DEVELOPMENT PRIORITY</div>
-        <div class="exercise-card">
-          <div class="exercise-title">Rack Chins/Assisted Pull-ups</div>
-          <div class="sets-row">
-            <span class="target-reps compound">4 x 6-10</span>
-            <input class="set-input" placeholder="Set 1" type="text">
-            <input class="set-input" placeholder="Set 2" type="text">
-            <input class="set-input" placeholder="Set 3" type="text">
-            <input class="set-input" placeholder="Set 4" type="text">
-            <input class="notes-input" placeholder="Notes/RPE" type="text">
-          </div>
-        </div>
-        <div class="exercise-card">
-          <div class="exercise-title">Bent Over Barbell Rows</div>
-          <div class="sets-row">
-            <span class="target-reps compound">4 x 8-12</span>
-            <input class="set-input" placeholder="Set 1" type="text">
-            <input class="set-input" placeholder="Set 2" type="text">
-            <input class="set-input" placeholder="Set 3" type="text">
-            <input class="set-input" placeholder="Set 4" type="text">
-            <input class="notes-input" placeholder="Notes/RPE" type="text">
-          </div>
-        </div>
-        <div class="exercise-section">MID BACK/TERRACE FOCUS</div>
-        <div class="exercise-card">
-          <div class="exercise-title">Reverse Grip Pulldown</div>
-          <div class="sets-row">
-            <span class="target-reps isolation">3 x 10-12</span>
-            <input class="set-input" placeholder="Set 1" type="text">
-            <input class="set-input" placeholder="Set 2" type="text">
-            <input class="set-input" placeholder="Set 3" type="text">
-            <input class="notes-input" placeholder="Notes/RPE" type="text">
-          </div>
-        </div>
-        <div class="exercise-card">
-          <div class="exercise-title">Supported Chest Row</div>
-          <div class="sets-row">
-            <span class="target-reps isolation">3 x 10-12</span>
-            <input class="set-input" placeholder="Set 1" type="text">
-            <input class="set-input" placeholder="Set 2" type="text">
-            <input class="set-input" placeholder="Set 3" type="text">
-            <input class="notes-input" placeholder="Notes/RPE" type="text">
-          </div>
-        </div>
-        <div class="exercise-section">BICEPS & FOREARMS</div>
-        <div class="exercise-card">
-          <div class="exercise-title">Barbell Curls</div>
-          <div class="sets-row">
-            <span class="target-reps isolation">3 x 8-12</span>
-            <input class="set-input" placeholder="Set 1" type="text">
-            <input class="set-input" placeholder="Set 2" type="text">
-            <input class="set-input" placeholder="Set 3" type="text">
-            <input class="notes-input" placeholder="Notes/RPE" type="text">
-          </div>
-        </div>
-        <div class="exercise-card">
-          <div class="exercise-title">Incline Dumbbell Curls</div>
-          <div class="sets-row">
-            <span class="target-reps isolation">3 x 10-15</span>
-            <input class="set-input" placeholder="Set 1" type="text">
-            <input class="set-input" placeholder="Set 2" type="text">
-            <input class="set-input" placeholder="Set 3" type="text">
-            <input class="notes-input" placeholder="Notes/RPE" type="text">
-          </div>
-        </div>
-        <div class="exercise-card">
-          <div class="exercise-title">Dumbbell Hammer Curls</div>
-          <div class="sets-row">
-            <span class="target-reps isolation">2 x 12-15</span>
-            <input class="set-input" placeholder="Set 1" type="text">
-            <input class="set-input" placeholder="Set 2" type="text">
-            <input class="notes-input" placeholder="Notes/RPE" type="text">
-          </div>
-        </div>
-        <div class="exercise-card">
-          <div class="exercise-title">Wrist Roller/Reverse Curls</div>
-          <div class="sets-row">
-            <span class="target-reps isolation">2 x 15-20</span>
-            <input class="set-input" placeholder="Set 1" type="text">
-            <input class="set-input" placeholder="Set 2" type="text">
-            <input class="notes-input" placeholder="Notes/RPE" type="text">
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- Day 4 -->
-    <div class="day-content" id="day4" style="display:none;">
-      <div class="exercises-list">
-        <div class="exercise-section">SHOULDER DEVELOPMENT</div>
-        <div class="exercise-card">
-          <div class="exercise-title">Standing Overhead Press</div>
-          <div class="sets-row">
-            <span class="target-reps compound">4 x 8-12</span>
-            <input class="set-input" placeholder="Set 1" type="text">
-            <input class="set-input" placeholder="Set 2" type="text">
-            <input class="set-input" placeholder="Set 3" type="text">
-            <input class="set-input" placeholder="Set 4" type="text">
-            <input class="notes-input" placeholder="Notes/RPE" type="text">
-          </div>
-        </div>
-        <div class="exercise-card">
-          <div class="exercise-title">Seated Dumbbell Shoulder Press</div>
-          <div class="sets-row">
-            <span class="target-reps compound">4 x 8-12</span>
-            <input class="set-input" placeholder="Set 1" type="text">
-            <input class="set-input" placeholder="Set 2" type="text">
-            <input class="set-input" placeholder="Set 3" type="text">
-            <input class="set-input" placeholder="Set 4" type="text">
-            <input class="notes-input" placeholder="Notes/RPE" type="text">
-          </div>
-        </div>
-        <div class="exercise-section">UPPER CHEST & LATERAL DELT</div>
-        <div class="exercise-card">
-          <div class="exercise-title">Incline Barbell Bench Press</div>
-          <div class="sets-row">
-            <span class="target-reps compound">3 x 8-12</span>
-            <input class="set-input" placeholder="Set 1" type="text">
-            <input class="set-input" placeholder="Set 2" type="text">
-            <input class="set-input" placeholder="Set 3" type="text">
-            <input class="notes-input" placeholder="Notes/RPE" type="text">
-          </div>
-        </div>
-        <div class="exercise-card">
-          <div class="exercise-title">Arnold Press</div>
-          <div class="sets-row">
-            <span class="target-reps compound">3 x 10-12</span>
-            <input class="set-input" placeholder="Set 1" type="text">
-            <input class="set-input" placeholder="Set 2" type="text">
-            <input class="set-input" placeholder="Set 3" type="text">
-            <input class="notes-input" placeholder="Notes/RPE" type="text">
-          </div>
-        </div>
-        <div class="exercise-section">SHOULDER ACCESSORIES</div>
-        <div class="exercise-card">
-          <div class="exercise-title">Dumbbell Lateral Raises</div>
-          <div class="sets-row">
-            <span class="target-reps isolation">3 x 15-20</span>
-            <input class="set-input" placeholder="Set 1" type="text">
-            <input class="set-input" placeholder="Set 2" type="text">
-            <input class="set-input" placeholder="Set 3" type="text">
-            <input class="notes-input" placeholder="Notes/RPE" type="text">
-          </div>
-        </div>
-        <div class="exercise-card">
-          <div class="exercise-title">Dumbbell Front Raises</div>
-          <div class="sets-row">
-            <span class="target-reps isolation">3 x 12-15</span>
-            <input class="set-input" placeholder="Set 1" type="text">
-            <input class="set-input" placeholder="Set 2" type="text">
-            <input class="set-input" placeholder="Set 3" type="text">
-            <input class="notes-input" placeholder="Notes/RPE" type="text">
-          </div>
-        </div>
-        <div class="exercise-card">
-          <div class="exercise-title">Cable Face Pulls</div>
-          <div class="sets-row">
-            <span class="target-reps isolation">3 x 15-20</span>
-            <input class="set-input" placeholder="Set 1" type="text">
-            <input class="set-input" placeholder="Set 2" type="text">
-            <input class="set-input" placeholder="Set 3" type="text">
-            <input class="notes-input" placeholder="Notes/RPE" type="text">
-          </div>
-        </div>
-        <div class="exercise-card">
-          <div class="exercise-title">Bent Over Rear Delt Raises</div>
-          <div class="sets-row">
-            <span class="target-reps isolation">3 x 15-20</span>
-            <input class="set-input" placeholder="Set 1" type="text">
-            <input class="set-input" placeholder="Set 2" type="text">
-            <input class="set-input" placeholder="Set 3" type="text">
-            <input class="notes-input" placeholder="Notes/RPE" type="text">
-          </div>
-        </div>
-        <div class="exercise-card">
-          <div class="exercise-title">Upright Rows</div>
-          <div class="sets-row">
-            <span class="target-reps compound">2 x 12-15</span>
-            <input class="set-input" placeholder="Set 1" type="text">
-            <input class="set-input" placeholder="Set 2" type="text">
-            <input class="notes-input" placeholder="Notes/RPE" type="text">
-          </div>
-        </div>
-      </div>
-    </div>
+    <!-- --------- END DAY CONTENTS --------- -->
 
     <div class="button-group">
-      <button class="button">Save</button>
-      <button class="button clear">Clear</button>
+      <button class="button" onclick="saveProgress()">💾 Save Progress</button>
+      <button class="button" onclick="loadProgress()">📂 Load Saved Data</button>
+      <button class="button" onclick="exportToCSV()">📊 Export to CSV</button>
+      <button class="button clear" onclick="clearAllData()">🗑️ Clear All</button>
     </div>
     <div class="notes-section">
-      <h3>Session Notes</h3>
-      <textarea class="notes-textarea" placeholder="Write your notes here..."></textarea>
+      <h3>📝 Daily Notes &amp; Observations</h3>
+      <textarea class="notes-textarea" id="daily-notes" placeholder="Record today's observations..."></textarea>
     </div>
   </div>
   <script>
-    function showDay(day) {
-      document.querySelectorAll('.tab').forEach((tab, idx) => {
-        if (idx === day - 1) tab.classList.add('active');
-        else tab.classList.remove('active');
-      });
-      document.querySelectorAll('.day-content').forEach((dc, idx) => {
-        dc.style.display = (idx === day - 1) ? 'block' : 'none';
+    // -------- DATA MODEL --------
+    const workoutDays = [
+      {
+        name: "Day 1: Legs + Pull",
+        sections: [
+          {
+            header: "PRIMARY LEG MOVEMENTS",
+            exercises: [
+              { id: "hex-deadlift", name: "Hex Deadlift", reps: "4 x 8-12", type: "compound", sets: 4 },
+              { id: "bulgarian-split", name: "Bulgarian Split Squats", reps: "3 x 10-12 each", type: "compound", sets: 3 },
+              { id: "romanian-dl", name: "Romanian Deadlifts", reps: "3 x 12-15", type: "compound", sets: 3 }
+            ]
+          },
+          {
+            header: "LAT-FOCUSED PULL WORK",
+            exercises: [
+              { id: "pullups", name: "Wide Grip Pull-ups/Lat Pulldown", reps: "4 x 8-12", type: "isolation", sets: 4 },
+              { id: "cable-row", name: "Seated Cable Row (Wide Grip)", reps: "3 x 10-12", type: "isolation", sets: 3 },
+              { id: "straight-arm", name: "Straight Arm Pulldowns", reps: "3 x 15-20", type: "isolation", sets: 3 }
+            ]
+          },
+          {
+            header: "FINISHING MOVES",
+            exercises: [
+              { id: "walking-lunges", name: "Walking Lunges", reps: "2 x 15 each", type: "isolation", sets: 2 },
+              { id: "calf-raises", name: "Standing Calf Raises", reps: "4 x 15-20", type: "isolation", sets: 4 },
+              { id: "single-arm-row", name: "Single Arm Cable Row", reps: "2 x 12-15 each", type: "isolation", sets: 2 },
+              { id: "db-shrugs", name: "Dumbbell Shrugs", reps: "3 x 12-15", type: "isolation", sets: 3 },
+              { id: "halo-raises", name: "Halo Raises", reps: "2 x 8-12", type: "isolation", sets: 2 }
+            ]
+          }
+        ]
+      },
+      {
+        name: "Day 2: Push A (Chest)",
+        sections: [
+          {
+            header: "PEC MINOR & UPPER CHEST DEVELOPMENT",
+            exercises: [
+              { id: "incline-db", name: "Incline Dumbbell Press", reps: "4 x 8-12", type: "compound", sets: 4 },
+              { id: "incline-flyes", name: "Incline Cable Flyes", reps: "3 x 12-15", type: "isolation", sets: 3 },
+              { id: "decline-pushups", name: "Decline Push-ups (feet elevated)", reps: "3 x 12-20", type: "isolation", sets: 3 }
+            ]
+          },
+          {
+            header: "SECONDARY CHEST & TRICEPS",
+            exercises: [
+              { id: "flat-db", name: "Flat Dumbbell Press", reps: "3 x 10-12", type: "compound", sets: 3 },
+              { id: "cable-cross", name: "Cable Crossovers", reps: "3 x 15-20", type: "isolation", sets: 3 },
+              { id: "close-grip", name: "Close Grip Bench Press", reps: "3 x 8-12", type: "compound", sets: 3 },
+              { id: "overhead-tri", name: "Overhead Tricep Extension (DB)", reps: "3 x 12-15", type: "isolation", sets: 3 },
+              { id: "rope-pushdowns", name: "Tricep Rope Pushdowns", reps: "3 x 15-20", type: "isolation", sets: 3 }
+            ]
+          },
+          {
+            header: "SHOULDER ACCESSORIES",
+            exercises: [
+              { id: "lateral-raises", name: "Lateral Raises", reps: "3 x 15-20", type: "isolation", sets: 3 },
+              { id: "rear-delt", name: "Rear Delt Flyes", reps: "3 x 15-20", type: "isolation", sets: 3 }
+            ]
+          }
+        ]
+      },
+      {
+        name: "Day 3: Pull B (Lats)",
+        sections: [
+          {
+            header: "LAT DEVELOPMENT PRIORITY",
+            exercises: [
+              { id: "rack-chins", name: "Rack Chins/Assisted Pull-ups", reps: "4 x 6-10", type: "compound", sets: 4 },
+              { id: "bb-rows", name: "Bent Over Barbell Rows", reps: "4 x 8-12", type: "compound", sets: 4 }
+            ]
+          },
+          {
+            header: "MID BACK/TERRACE FOCUS",
+            exercises: [
+              { id: "reverse-pulldown", name: "Reverse Grip Pulldown", reps: "3 x 10-12", type: "isolation", sets: 3 },
+              { id: "chest-row", name: "Supported Chest Row", reps: "3 x 10-12", type: "isolation", sets: 3 }
+            ]
+          },
+          {
+            header: "BICEPS & FOREARMS",
+            exercises: [
+              { id: "bb-curls", name: "Barbell Curls", reps: "3 x 8-12", type: "isolation", sets: 3 },
+              { id: "incline-curls", name: "Incline Dumbbell Curls", reps: "3 x 10-15", type: "isolation", sets: 3 },
+              { id: "hammer-curls", name: "Dumbbell Hammer Curls", reps: "2 x 12-15", type: "isolation", sets: 2 },
+              { id: "wrist-roller", name: "Wrist Roller/Reverse Curls", reps: "2 x 15-20", type: "isolation", sets: 2 }
+            ]
+          }
+        ]
+      },
+      {
+        name: "Day 4: Push B (Shoulders)",
+        sections: [
+          {
+            header: "SHOULDER DEVELOPMENT",
+            exercises: [
+              { id: "oh-press", name: "Standing Overhead Press", reps: "4 x 8-12", type: "compound", sets: 4 },
+              { id: "seated-db-press", name: "Seated Dumbbell Shoulder Press", reps: "4 x 8-12", type: "compound", sets: 4 }
+            ]
+          },
+          {
+            header: "UPPER CHEST & LATERAL DELT",
+            exercises: [
+              { id: "incline-bb", name: "Incline Barbell Bench Press", reps: "3 x 8-12", type: "compound", sets: 3 },
+              { id: "arnold-press", name: "Arnold Press", reps: "3 x 10-12", type: "compound", sets: 3 }
+            ]
+          },
+          {
+            header: "SHOULDER ACCESSORIES",
+            exercises: [
+              { id: "db-lateral", name: "Dumbbell Lateral Raises", reps: "3 x 15-20", type: "isolation", sets: 3 },
+              { id: "db-front", name: "Dumbbell Front Raises", reps: "3 x 12-15", type: "isolation", sets: 3 },
+              { id: "face-pulls", name: "Cable Face Pulls", reps: "3 x 15-20", type: "isolation", sets: 3 },
+              { id: "rear-delt-raises", name: "Bent Over Rear Delt Raises", reps: "3 x 15-20", type: "isolation", sets: 3 },
+              { id: "upright-rows", name: "Upright Rows", reps: "2 x 12-15", type: "compound", sets: 2 }
+            ]
+          }
+        ]
+      }
+    ];
+
+    // --------- RENDERING ---------
+    function renderDays() {
+      const daysRoot = document.getElementById('days-root');
+      daysRoot.innerHTML = '';
+      workoutDays.forEach((day, dayIdx) => {
+        // Table (desktop)
+        let tableHTML = `
+        <div class="day-content${dayIdx === 0 ? ' active' : ''}" id="day${dayIdx+1}">
+          <table class="exercise-table">
+            <thead>
+              <tr>
+                <th>Exercise</th>
+                <th>Target Reps</th>
+                <th>Set 1</th>
+                <th>Set 2</th>
+                <th>Set 3</th>
+                <th>Set 4</th>
+                <th>Notes/RPE</th>
+              </tr>
+            </thead>
+            <tbody>`;
+
+        day.sections.forEach(section => {
+          tableHTML += `<tr class="section-header"><td colspan="7">${section.header}</td></tr>`;
+          section.exercises.forEach(ex => {
+            tableHTML += `<tr>
+              <td class="exercise-name">${ex.name}</td>
+              <td class="target-reps ${ex.type}">${ex.reps}</td>`;
+            for (let s = 1; s <= 4; s++) {
+              let disabled = s > ex.sets ? "disabled" : "";
+              tableHTML += `<td><input class="set-input" id="t${dayIdx+1}-${ex.id}-s${s}" type="text" ${disabled}></td>`;
+            }
+            tableHTML += `<td><input class="notes-input" id="t${dayIdx+1}-${ex.id}-notes" type="text"></td></tr>`;
+          });
+        });
+
+        tableHTML += `</tbody></table>`;
+
+        // Mobile cards
+        let cardsHTML = `<div class="mobile-cards">`;
+        day.sections.forEach(section => {
+          cardsHTML += `<div class="exercise-section">${section.header}</div>`;
+          section.exercises.forEach(ex => {
+            cardsHTML += `<div class="exercise-card">
+              <div class="exercise-title">${ex.name}</div>
+              <div class="target-reps ${ex.type}">${ex.reps}</div>`;
+            for (let s = 1; s <= ex.sets; s++) {
+              cardsHTML += `<div class="input-row">
+                <label for="m${dayIdx+1}-${ex.id}-s${s}">Set ${s}</label>
+                <input class="set-input" id="m${dayIdx+1}-${ex.id}-s${s}" type="text">
+              </div>`;
+            }
+            for (let s = ex.sets+1; s <= 4; s++) {
+              // For mobile, don't show extra disabled inputs to keep clean
+            }
+            cardsHTML += `<div class="input-row">
+              <label for="m${dayIdx+1}-${ex.id}-notes">Notes/RPE</label>
+              <input class="notes-input" id="m${dayIdx+1}-${ex.id}-notes" type="text">
+            </div>
+            </div>`;
+          });
+        });
+        cardsHTML += `</div>`;
+
+        daysRoot.innerHTML += `
+          <div class="day-content${dayIdx === 0 ? ' active' : ''}" id="day${dayIdx+1}">
+            ${tableHTML}
+            ${cardsHTML}
+          </div>
+        `;
       });
     }
+    renderDays();
+
+    // --------- TAB HANDLING ---------
+    function showDay(dayNumber) {
+      document.querySelectorAll('.day-content').forEach((el, idx) => {
+        el.classList.toggle('active', idx === dayNumber-1);
+      });
+      document.querySelectorAll('.tab').forEach((el, idx) => {
+        el.classList.toggle('active', idx === dayNumber-1);
+      });
+    }
+
+    // --------- WEEK INFO UPDATER ---------
+    const weekInfo = {
+      '1': {
+        focus: 'Progressive overload',
+        repRanges: '8-12 for compounds, 12-15 for isolation',
+        goal: 'Build work capacity'
+      },
+      '2': {
+        focus: 'Increase training volume',
+        repRanges: '10-15 for most exercises',
+        goal: 'Add drop sets and supersets'
+      },
+      '3': {
+        focus: 'Muscle quality and separation',
+        repRanges: '12-20 (higher rep ranges)',
+        goal: 'More isolation work'
+      },
+      '4': {
+        focus: 'Maintain muscle while improving definition',
+        repRanges: '15-25 (very high reps)',
+        goal: 'Focus on muscle pumps and vascularity'
+      }
+    };
     function updateWeekInfo() {
-      const info = [
-        {focus: "Progressive overload", reps: "8-12 for compounds, 12-15 for isolation", goal: "Build work capacity"},
-        {focus: "Volume Accumulation", reps: "10-15 for compounds, 15-20 for isolation", goal: "Increase volume"},
-        {focus: "Intensity & Detail", reps: "6-10 for compounds, 10-15 for isolation", goal: "Maximize intensity"},
-        {focus: "Peak Conditioning", reps: "8-10 for compounds, 12-15 for isolation", goal: "Peak performance"}
-      ];
-      const idx = document.getElementById('week-select').value - 1;
-      const w = info[idx];
+      const wk = weekInfo[document.getElementById('week-select').value];
       document.getElementById('week-info').innerHTML =
-        `<p><strong>Focus:</strong> ${w.focus}</p>
-         <p><strong>Rep Ranges:</strong> ${w.reps}</p>
-         <p><strong>Goal:</strong> ${w.goal}</p>`;
+        `<p><strong>Focus:</strong> ${wk.focus}</p>
+         <p><strong>Rep Ranges:</strong> ${wk.repRanges}</p>
+         <p><strong>Goal:</strong> ${wk.goal}</p>`;
     }
+
+    // --------- SYNC TABLE AND CARD INPUTS ---------
+    // This ensures that edits in the table or cards reflect in both.
+    function syncInputs(idPrefix) {
+      // all ids have pattern t<day>-<ex>-s<n> and m<day>-<ex>-s<n>
+      // also ...-notes
+      document.querySelectorAll('.set-input, .notes-input').forEach(input => {
+        input.addEventListener('input', function() {
+          const id = input.id;
+          if (id.startsWith('t')) {
+            const mobileId = 'm' + id.slice(1);
+            const mInput = document.getElementById(mobileId);
+            if (mInput && mInput.value !== input.value) mInput.value = input.value;
+          }
+          if (id.startsWith('m')) {
+            const tableId = 't' + id.slice(1);
+            const tInput = document.getElementById(tableId);
+            if (tInput && tInput.value !== input.value) tInput.value = input.value;
+          }
+        });
+      });
+    }
+    // Call once DOM is ready
+    setTimeout(syncInputs, 200);
+
+    // --------- SAVE/LOAD/CLEAR/EXPORT ---------
+    function saveProgress() {
+      const workoutData = {
+        week: document.getElementById('week-select').value,
+        exercises: {},
+        notes: document.getElementById('daily-notes').value,
+        lastSaved: new Date().toISOString()
+      };
+      document.querySelectorAll('.set-input, .notes-input').forEach(input => {
+        if (input.id && input.value) workoutData.exercises[input.id] = input.value;
+      });
+      localStorage.setItem('contestPrepWorkout', JSON.stringify(workoutData));
+      showStatus('Progress saved successfully!', 'success');
+    }
+    function loadProgress() {
+      const saved = localStorage.getItem('contestPrepWorkout');
+      if (saved) {
+        const workoutData = JSON.parse(saved);
+        if (workoutData.week) {
+          document.getElementById('week-select').value = workoutData.week;
+          updateWeekInfo();
+        }
+        if (workoutData.exercises) {
+          Object.keys(workoutData.exercises).forEach(inputId => {
+            const input = document.getElementById(inputId);
+            if (input) input.value = workoutData.exercises[inputId];
+            // also fill counterpart
+            if (inputId.startsWith('t')) {
+              const mInput = document.getElementById('m' + inputId.slice(1));
+              if (mInput) mInput.value = workoutData.exercises[inputId];
+            }
+            if (inputId.startsWith('m')) {
+              const tInput = document.getElementById('t' + inputId.slice(1));
+              if (tInput) tInput.value = workoutData.exercises[inputId];
+            }
+          });
+        }
+        if (workoutData.notes) document.getElementById('daily-notes').value = workoutData.notes;
+        showStatus(`Data loaded from ${new Date(workoutData.lastSaved).toLocaleDateString()}`, 'success');
+      } else {
+        showStatus('No saved data found', 'error');
+      }
+    }
+    function exportToCSV() {
+      const activeDayIdx = Array.from(document.querySelectorAll('.day-content')).findIndex(dc => dc.classList.contains('active'));
+      const day = workoutDays[activeDayIdx];
+      const week = document.getElementById('week-select').selectedOptions[0].text;
+      let csv = `16-Week Contest Prep Workout Tracker\n${week}\n${day.name}\n\nExercise,Target Reps,Set 1,Set 2,Set 3,Set 4,Notes\n`;
+      day.sections.forEach(section => {
+        section.exercises.forEach(ex => {
+          const get = n => (document.getElementById(`t${activeDayIdx+1}-${ex.id}-s${n}`)?.value || "");
+          const notes = document.getElementById(`t${activeDayIdx+1}-${ex.id}-notes`)?.value || "";
+          csv += `"${ex.name}","${ex.reps}","${get(1)}","${get(2)}","${get(3)}","${get(4)}","${notes}"\n`;
+        });
+      });
+      const dailyNotes = document.getElementById('daily-notes').value;
+      if (dailyNotes) csv += `\nDaily Notes:\n"${dailyNotes}"\n`;
+      // Download
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.style.display = 'none';
+      a.href = url;
+      a.download = `Contest_Prep_${day.name.replace(/[^a-zA-Z0-9]/g, '_')}_${new Date().toISOString().split('T')[0]}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+      showStatus('Workout exported successfully!', 'success');
+    }
+    function clearAllData() {
+      if (confirm('Are you sure you want to clear all data? This action cannot be undone.')) {
+        document.querySelectorAll('.set-input, .notes-input').forEach(input => input.value = '');
+        document.getElementById('daily-notes').value = '';
+        localStorage.removeItem('contestPrepWorkout');
+        showStatus('All data cleared', 'success');
+      }
+    }
+    function showStatus(message, type) {
+      const statusDiv = document.getElementById('status-message');
+      statusDiv.textContent = message;
+      statusDiv.className = `status-message ${type}`;
+      statusDiv.style.display = 'block';
+      setTimeout(() => { statusDiv.style.display = 'none'; }, 3000);
+    }
+    // Auto-save
+    let autoSaveTimer;
+    document.addEventListener('input', (e) => {
+      if (e.target.matches('.set-input, .notes-input, .notes-textarea')) {
+        clearTimeout(autoSaveTimer);
+        autoSaveTimer = setTimeout(() => {
+          saveProgress();
+          //console.log('Auto-saved at', new Date().toLocaleTimeString());
+        }, 30000);
+      }
+    });
+    // Load progress on startup
+    window.addEventListener('load', () => {
+      setTimeout(loadProgress, 200);
+    });
+    // Keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+        e.preventDefault();
+        saveProgress();
+      }
+    });
   </script>
 </body>
 </html>
